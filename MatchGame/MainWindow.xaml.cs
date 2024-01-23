@@ -37,9 +37,13 @@ namespace MatchGame
         {
             tenthsOfSecondsElapsed++;
             timeTextBlock.Text = (tenthsOfSecondsElapsed / 10F).ToString("0.0s");
-            if (matchesFound == 8)
+            if (matchesFound == 8 || tenthsOfSecondsElapsed > 100)
             {
                 timer.Stop();
+                if (tenthsOfSecondsElapsed > 100)
+                {
+                    alarmClock.Visibility = Visibility.Visible;
+                }
                 timeTextBlock.Text = timeTextBlock.Text + " - Play again?";
             }
         }
@@ -62,7 +66,7 @@ namespace MatchGame
 
             foreach (TextBlock textBlock in mainGrid.Children.OfType<TextBlock>())
             {
-                if (textBlock.Name != "timeTextBlock")
+                if (textBlock.Name != "timeTextBlock" && textBlock.Name !="alarmClock")
                 {
                     textBlock.Visibility = Visibility.Visible;
                     int index = random.Next(animalEmoji.Count);
@@ -72,6 +76,7 @@ namespace MatchGame
                 }
             }
 
+            alarmClock.Visibility = Visibility.Hidden;
             timer.Start();
             tenthsOfSecondsElapsed = 0;
             matchesFound = 0;
@@ -104,7 +109,7 @@ namespace MatchGame
 
         private void timeTextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (matchesFound == 8)
+            if (matchesFound == 8 || tenthsOfSecondsElapsed > 100)
             {
                 SetUpGame();
             }
